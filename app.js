@@ -18,7 +18,7 @@ var entradaDeDados = readline.createInterface({
     output: process.stdout
 })
 
-
+let statusAluno = mediaEscolar.validarStatus(media) 
 
 
 
