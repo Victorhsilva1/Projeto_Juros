@@ -11,61 +11,62 @@ var readline = require('readline');
 //Padrão de mensagens de erro da aplicação
 const MESSAGE_ERROR_EMPTY = 'ERRO: Existem campos que não foram preenchidos.'
 const MESSAGE_ERROR_NOT_NUMBER = 'ERRO: Não é possivel calcular com a entrada de letras.'
-const MESSAGE_ERROR_OUT_OF_RANGE = 'ERRO: Os valores informados precisam ser entre 0 até 10'
 
 // Import dos módulos criados
 var calculoDoJuros = require('./Modulo/calculoDeJuros');
 var exibicaoDeDados = require('./Modulo/entradaDeDados');
 
+//Criando um objeto para entrada e e saida de dados via terminal 
 var entradaDeDados = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-
-
-function
-if (nome == '' || produto == '' || capital == '' || taxaAnual == '' || jurosComposto == '' || tempo == '') {
-    console.log(MESSAGE_ERROR_EMPTY)
-
-} else if (isNaN(capital) == true || isNaN(taxaAnual) == true || isNaN(jurosComposto) == true || isNaN(valorFinal) == true) {
-    console.log(MESSAGE_ERROR_NOT_NUMBER)
-}
-
+//função para inserir o nome do cliente
 entradaDeDados.question('Insira seu nome: ', function (nomeCliente) {
     let nome = (nomeCliente).toUpperCase()
 
+    //função para inserir o produto do cliente
     entradaDeDados.question('Insira o seu produto: ', function (produto) {
+        //toUpperCase faz com que as letras fiquem maiusculas
         let produtoInserido = (produto).toUpperCase()
 
+        // capital inicial seria o p
         entradaDeDados.question('Insira o valor do capital inicial: ', function (capitalInicial) {
             let capital = (Number(capitalInicial))
 
+            // seria r = a taxa de juros anual (em decimal)
             entradaDeDados.question('Insira a taxa de juros anual em percentual: ', function (taxaJurosAnual) {
                 let taxaAnual = (Number(taxaJurosAnual))
 
+                // 𝑛 é o número de vezes que os juros são compostos por ano.
                 entradaDeDados.question('Insira o número de vezes que os juros são compostos por ano: ', function (parcelasAno) {
                     let jurosComposto = (Number(parcelasAno))
 
+                    // t que seria o tempo em meses 
                     entradaDeDados.question('Insira o tempo em meses para o cálculo: ', function (tempoEmMeses) {
                         let tempo = (Number(tempoEmMeses))
 
-
-                        let valorFinal = calculoDoJuros.calcular(capital, taxaAnual, jurosComposto, tempo)
-                        exibicaoDeDados.mensagemCliente(nome, produto, capital, tempo, valorFinal)
-
-                        entradaDeDados.close()
-
-                        if (nome == '' || produto == '' || capital == '' || taxaAnual == '' || jurosComposto == '' || tempo == '') {
+                        // SE(if) estiver em vazio sem nenhum campo preenchido ('') deixando somente no final para o tratamento
+                        // por conta que não se faria o tratamento em todas automaticamente sendo back :)
+                        if (nome == '' || produtoInserido == '' || capital == '' || taxaAnual == '' || jurosComposto == '' || tempo == '') {
+                            //apareceça a mensagem de erro definida lá em cima como "ERRO: Existem campos que não foram preenchidos."
                             console.log(MESSAGE_ERROR_EMPTY)
+                            //fechando o programa caso tenha um erro
+                            entradaDeDados.close()
 
+                            //Isnan é validação para caso nao seja um numero 
                         } else if (isNaN(capital) == true || isNaN(taxaAnual) == true || isNaN(jurosComposto) == true || isNaN(valorFinal) == true) {
                             console.log(MESSAGE_ERROR_NOT_NUMBER)
+                            entradaDeDados.close()
                         }
 
-                       
+                        // caso tudo esteja correto imprimir o entradaDeDados.js
+                        else{ let valorFinal = calculoDoJuros.calcular(capital, taxaAnual, jurosComposto, tempo)
+                        exibicaoDeDados.mensagemCliente(nome, produto, capital, tempo, valorFinal)
+                        entradaDeDados.close()
 
-
+                        }
                     })
                 })
             })
